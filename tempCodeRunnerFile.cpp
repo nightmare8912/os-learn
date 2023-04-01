@@ -1,0 +1,1 @@
+ftBurst[i] > 0
