@@ -8,22 +8,22 @@ void getInput(int available[], int max[][10], int allocation[][10], int need[][1
     for (int i = 0; i < num_resources; i++)
     {
         printf("Enter available instances of R%d: ", i);
-        // cin >> available[i];
-        available[i] = rand() % 10;
-        cout << available[i] << endl;
+        cin >> available[i];
+        // available[i] = rand() % 10;
+        // cout << available[i] << endl;
     }
     for (int i = 0; i < num_processes; i++)
     {
         for (int j = 0; j < num_resources; j++)
         {
             printf ("Enter the maximum resources that P%d may request of resource type R%d: ", i, j);
-            // cin >> max[i][j];
-            max[i][j] = rand () % 10 + 1;
-            cout << max[i][j] << endl;
+            cin >> max[i][j];
+            // max[i][j] = rand () % 10 + 1;
+            // cout << max[i][j] << endl;
             printf ("Enter the resources that P%d has been allocated of resource type R%d: ", i, j);
-            // cin >> allocation[i][j];
-            allocation[i][j] = rand() % max[i][j];
-            cout << allocation[i][j] << endl;
+            cin >> allocation[i][j];
+            // allocation[i][j] = rand() % max[i][j];
+            // cout << allocation[i][j] << endl;
             need[i][j] = max[i][j] - allocation[i][j];
         }
     }
