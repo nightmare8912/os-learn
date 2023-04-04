@@ -18,22 +18,22 @@ void getInput(int available[], int max[][10], int allocation[][10], int need[][1
     for (int i = 0; i < num_resources; i++)
     {
         printf("Enter available instances of R%d: ", i);
-        // cin >> available[i];
-        available[i] = rand() % 10;
-        cout << available[i] << endl;
+        cin >> available[i];
+        // available[i] = rand() % 10;
+        // cout << available[i] << endl;
     }
     for (int i = 0; i < num_processes; i++)
     {
         for (int j = 0; j < num_resources; j++)
         {
             printf ("Enter the maximum resources that P%d may request of resource type R%d: ", i, j);
-            // cin >> max[i][j];
-            max[i][j] = rand () % 10 + 1;
-            cout << max[i][j] << endl;
+            cin >> max[i][j];
+            // max[i][j] = rand () % 10 + 1;
+            // cout << max[i][j] << endl;
             printf ("Enter the resources that P%d has been allocated of resource type R%d: ", i, j);
-            // cin >> allocation[i][j];
-            allocation[i][j] = rand() % max[i][j];
-            cout << allocation[i][j] << endl;
+            cin >> allocation[i][j];
+            // allocation[i][j] = rand() % max[i][j];
+            // cout << allocation[i][j] << endl;
             need[i][j] = max[i][j] - allocation[i][j];
         }
     }
@@ -89,11 +89,18 @@ returnType findProcToExec(returnType r, int need[][10], bool finish[], int work[
             {
                 r.pid = i;
                 r.resource_number = j;
-                return r;
             }
+            else   
+            {
+                r.pid = -2;
+                break;
+            } 
         }
+        if (r.pid != -2)
+            goto found_process;
     }
-    return r;
+    found_process:
+        return r;
 }
 // executes the processes one by one
 void execute(int available[], int max[][10], int allocation[][10], int need[][10], int num_processes, int num_resources)
@@ -111,9 +118,12 @@ void execute(int available[], int max[][10], int allocation[][10], int need[][10
     while(r.pid != -2)
     {
         r = findProcToExec(r, need, finish, work, num_processes, num_resources);
+        // cout << r.pid << endl;
         if (r.pid == -2)
             break;
-        work[r.resource_number] = work[r.resource_number] + allocation[r.pid][r.resource_number]; // increasing the number of avaialble resources, as after processes finishes its execution, it frees its already held resources
+        for (int i = 0; i < num_resources; i++)
+            work[i] = work[i] + allocation[r.pid][i];    
+        // increasing the number of avaialble resources, as after processes finishes its execution, it frees its already held resources
         finish[r.pid] = true;
         cout << "P" << r.pid << "\t"; // prints the process, so we can see in what order were the processes executed
     }
