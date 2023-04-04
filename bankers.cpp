@@ -11,6 +11,7 @@ class returnType
         pid =-1;
     }
 };
+// randomly initializes the matrices
 void getInput(int available[], int max[][10], int allocation[][10], int need[][10], int num_processes, int num_resources)
 {   
     cout << "Enter the values for available resources" << endl;
@@ -65,6 +66,7 @@ void print(int available[], int max[][10], int allocation[][10], int need[][10],
         cout << endl;    
     }    
 }
+// returns true if all the processes have been completed otherwise false
 bool isComplete(bool finish[], int num_processes)
 {
     for (int i = 0; i < num_processes; i++)
@@ -74,6 +76,8 @@ bool isComplete(bool finish[], int num_processes)
     }
     return true;
 }
+// returns the process id (index) of the process along with the resource id (index) of the resource that can be allocated to it
+// returns -1 as pid, if no such process can be found
 returnType findProcToExec(returnType r, int need[][10], bool finish[], int work[], int num_processes, int num_resources)
 {
     r.pid = -2;
@@ -91,6 +95,7 @@ returnType findProcToExec(returnType r, int need[][10], bool finish[], int work[
     }
     return r;
 }
+// executes the processes one by one
 void execute(int available[], int max[][10], int allocation[][10], int need[][10], int num_processes, int num_resources)
 {
     // Initializing
@@ -108,20 +113,14 @@ void execute(int available[], int max[][10], int allocation[][10], int need[][10
         r = findProcToExec(r, need, finish, work, num_processes, num_resources);
         if (r.pid == -2)
             break;
-        work[r.pid] = work[r.pid] + allocation[r.pid][r.resource_number];
-
-        cout << "\nAvaialable resources after executing P" << r.pid << ": \n";
-        for (int i = 0; i < num_resources; i++)
-            cout << work[i] << "\t";
-        cout << endl;    
-
+        work[r.resource_number] = work[r.resource_number] + allocation[r.pid][r.resource_number]; // increasing the number of avaialble resources, as after processes finishes its execution, it frees its already held resources
         finish[r.pid] = true;
-        cout << "P" << r.pid << "\t";
+        cout << "P" << r.pid << "\t"; // prints the process, so we can see in what order were the processes executed
     }
     cout << endl;
     if(isComplete(finish, num_processes))
         cout << "The system is in a safe state" << endl;
-    else
+    else // this part is executed when atleast one process cannot be executed as its requirement cannot be met
         cout << "The system is not in a safe state" << endl;    
 }
 int main()
@@ -130,6 +129,7 @@ int main()
     cout << "Enter resources available and the number of processes: ";
     cin >> num_resources >> num_processes;
     srand((long int)clock());
+    // max number of processes allowed is 10 here
     if (num_processes > 10)
         num_processes = 10;
     int available[num_resources], max[num_processes][10]; 
