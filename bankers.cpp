@@ -22,7 +22,7 @@ void getInput(int available[], int max[][10], int allocation[][10], int need[][1
             cout << max[i][j] << endl;
             printf ("Enter the resources that P%d has been allocated of resource type R%d: ", i, j);
             // cin >> allocation[i][j];
-            allocation[i][j] = rand() % max[i][j];
+            allocation[i][j] = rand() % (max[i][j] + 1);
             cout << allocation[i][j] << endl;
             need[i][j] = max[i][j] - allocation[i][j];
         }
@@ -101,18 +101,18 @@ void execute(int available[], int max[][10], int allocation[][10], int need[][10
     }
     cout << endl;
     int pid = -1;
+    cout << "<  ";
     while(pid != -2)
     {
         pid = findProcToExec(need, finish, work, num_processes, num_resources);
         if (pid == -2)
             break;
         for (int i = 0; i < num_resources; i++)
-            work[i] = work[i] + allocation[pid][i];    
-        // increasing the number of avaialble resources, as after processes finishes its execution, it frees its already held resources
+            work[i] = work[i] + allocation[pid][i]; // increasing the number of avaialble resources, as after processes finishes its execution, it frees its already held resources
         finish[pid] = true;
-        cout << "P" << pid << "\t"; // prints the process, so we can see in what order were the processes executed
+        cout << "P" << pid << "  "; // prints the process, so we can see in what order were the processes executed
     }
-    cout << endl;
+    cout << ">" <<endl;
     if(isComplete(finish, num_processes))
         cout << "The system is in a safe state" << endl;
     else // this part is executed when atleast one process cannot be executed as its requirement cannot be met
@@ -125,8 +125,8 @@ int main()
     cin >> num_resources >> num_processes;
     srand((long int)clock());
     // max number of processes allowed is 10 here
-    if (num_processes > 10)
-        num_processes = 10;
+    if (num_resources > 10)
+        num_resources = 10;
     int available[num_resources], max[num_processes][10]; 
     int allocation[num_processes][10], need[num_processes][10];  
     getInput(available, max, allocation, need, num_processes, num_resources); 
