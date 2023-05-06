@@ -6,31 +6,8 @@ using namespace std;
 
 int no_of_processes = 11, no_of_resources = 0;
 
-void getInput(int available[], int max[][MAX_PROC], int allocation[][MAX_PROC])
-{
-    for (int i = 0; i < no_of_resources; i++)
-    {
-        cout << "Enter the available instance of resource R" << i <<": ";
-        // cin >> available[i];
-        available[i] = rand() % 10 + 1;
-        cout << available[i] << endl;
-    }
+void printMatrix(int mat[][MAX_PROC]);
 
-    for (int i = 0; i < no_of_processes; i++)
-    {
-        for (int j = 0; j < no_of_resources; j++)
-        {
-            cout << "Enter max instance of resource type R" << j << " that can be requested by process P" << i << ": ";
-            // cin >> max[i][j];
-            max[i][j] = rand() % 10 + 1;
-            cout << max[i][j] << endl;
-            cout << "Enter the amount of instance of R" << j << " that has  been allocated to process P" <<i << ": ";
-            // cin >> allocation[i][j];
-            allocation[i][j] = rand() % max[i][j];
-            cout << allocation[i][j] << endl;
-        }
-    }
-}
 
 void printArray(int arr[], int n)
 {
@@ -54,9 +31,13 @@ void printMatrix(int mat[][MAX_PROC])
 void calculateNeed(int max[][MAX_PROC], int allocation[][MAX_PROC], int need[][MAX_PROC])
 {
     for (int i = 0; i < no_of_processes; i++)
-    {
+    {       
         for (int j = 0; j < no_of_resources; j++)
+        {
             need[i][j] = max[i][j] - allocation[i][j];
+            // cout << need[i][j] << "\t";
+        }
+            
     }
 }
 
@@ -157,7 +138,29 @@ int main()
         cin >> no_of_resources;   
     }
     int max[no_of_resources][MAX_PROC], allocation[no_of_resources][MAX_PROC], need[no_of_resources][MAX_PROC], available[no_of_resources];
-    getInput(available, max, allocation);
+    for (int i = 0; i < no_of_resources; i++)
+    {
+        cout << "Enter the available instance of resource R" << i <<": ";
+        // cin >> available[i];
+        available[i] = rand() % 10 + 1;
+        cout << available[i] << endl;
+    }
+
+    for (int i = 0; i < no_of_processes; i++)
+    {
+        for (int j = 0; j < no_of_resources; j++)
+        {
+            cout << "Enter max instance of resource type R" << j << " that can be requested by process P" << i << ": ";
+            // cin >> max[i][j];
+            max[i][j] = rand() % 10 + 1;
+            cout << max[i][j] << endl;
+            cout << "Enter the amount of instance of R" << j << " that has  been allocated to process P" <<i << ": ";
+            // cin >> allocation[i][j];
+            allocation[i][j] = rand() % max[i][j];
+            cout << allocation[i][j] << endl;
+        }
+    }
+    // getInput(available, max, allocation);
     calculateNeed(max, allocation, need);
     cout << "Available: ";
     printArray(available, no_of_resources);
